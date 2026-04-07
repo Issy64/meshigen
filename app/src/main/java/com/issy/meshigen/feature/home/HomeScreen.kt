@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -23,9 +24,39 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 
+data class RecommendationUiModel(
+    val id: String,
+    val name: String,
+    val description: String,
+    val category: String,
+)
+sealed interface HomeResultUiState {
+    data object Initial : HomeResultUiState
+    data class Success(val items: List<RecommendationUiModel>) : HomeResultUiState
+}
+
+private fun createDummyRecommendations(moodText: String): List<RecommendationUiModel> {
+    return listOf(
+        RecommendationUiModel(
+            id = "kokura_yaki_udon",
+            name = "小倉焼うどん",
+            description = "香ばしくて満足感があり、ガッツリ食べたい気分に合います。",
+            category = "麺"
+        ),
+        RecommendationUiModel(
+            id = "yaki_curry",
+            name = "焼きカレー",
+            description = "熱々で濃厚なので、ちょっと元気を出したい時に向いています。",
+            category = "ご飯もの"
+        )
+    )
+}
+
+
 @Composable
 fun HomeScreen() {
     var moodText by rememberSaveable { mutableStateOf("") }
+    var resultUiState by remember { mutableStateOf<HomeResultUiState>(HomeResultUiState.Initial) }
     val keyboardController = LocalSoftwareKeyboardController.current
     val isButtonEnabled = moodText.isNotBlank()
 
