@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Meshigen</string>
+
+    <string name="home_title">今の気分は？</string>
+    <string name="home_description">今の気分を入力すると、おすすめの北九州市のB級グルメを提案します。</string>
+    <string name="home_mood_label">今の気分</string>
+    <string name="home_mood_placeholder">たとえば (ガッツリ食べたい / 甘いものが欲しい)</string>
+    <string name="home_recommend_button">おすすめを見る</string>
+    <string name="home_initial_hint">気分を入力すると、おすすめ結果がここに表示されます。</string>
 </resources>
