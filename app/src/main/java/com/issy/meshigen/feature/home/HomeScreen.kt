@@ -110,7 +110,12 @@ fun HomeScreen() {
             Spacer(modifier = Modifier.height(8.dp))
 
             Button(
-                onClick = { }, // TODO: 提案ロジックを実装
+                onClick = {
+                    resultUiState = HomeResultUiState.Success(
+                        items = createDummyRecommendations(moodText),
+                    )
+                    keyboardController?.hide()
+                },
                 enabled = isButtonEnabled,
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -118,10 +123,19 @@ fun HomeScreen() {
             }
 
             Spacer(modifier = Modifier.height(24.dp))
-            Text(
-                text = "気分を入力すると、おすすめ結果がここに表示されます。",
-                style = MaterialTheme.typography.bodyMedium,
-            )
+
+            when (val state = resultUiState) {
+                HomeResultUiState.Initial -> {
+                    Text(
+                        text = "気分を入力すると、おすすめ結果がここに表示されます。",
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                }
+
+                is HomeResultUiState.Success -> {
+                    RecommendationList(items = state.items)
+                }
+            }
         }
     }
 }
