@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -59,9 +60,9 @@ internal fun DetailScreen() {
     DetailScreenContent(
         uiModel = baseUiModel.copy(favorite = favorite),
         onBackClick = { },
-        onFavoriteClick = { favorite = !favorite },
+        onToggleFavoriteClick = { favorite = !favorite },
         onDeleteClick = { },
-        onOpenMapsClick = { },
+        onOpenMapClick = { },
     )
 }
 
@@ -69,9 +70,9 @@ internal fun DetailScreen() {
 internal fun DetailScreenContent(
     uiModel: DetailUiModel,
     onBackClick: () -> Unit,
-    onFavoriteClick: () -> Unit,
+    onToggleFavoriteClick: () -> Unit,
     onDeleteClick: () -> Unit,
-    onOpenMapsClick: () -> Unit,
+    onOpenMapClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -129,9 +130,9 @@ internal fun DetailScreenContent(
                 )
                 ActionButtons(
                     favorite = uiModel.favorite,
-                    onFavoriteClick = onFavoriteClick,
+                    onToggleFavoriteClick = onToggleFavoriteClick,
                     onDeleteClick = onDeleteClick,
-                    onOpenMapsClick = onOpenMapsClick,
+                    onOpenMapClick = onOpenMapClick,
                 )
             }
         }
@@ -232,9 +233,9 @@ private fun SectionCard(
 @Composable
 private fun ActionButtons(
     favorite: Boolean,
-    onFavoriteClick: () -> Unit,
+    onToggleFavoriteClick: () -> Unit,
     onDeleteClick: () -> Unit,
-    onOpenMapsClick: () -> Unit,
+    onOpenMapClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val favoriteLabel = if (favorite) {
@@ -248,20 +249,37 @@ private fun ActionButtons(
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Button(
-            onClick = onOpenMapsClick,
+            onClick = onOpenMapClick,
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text(text = stringResource(R.string.detail_action_open_maps))
         }
-        OutlinedButton(
-            onClick = onFavoriteClick,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Text(text = favoriteLabel)
+        if (favorite) {
+            Button(
+                onClick = onToggleFavoriteClick,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                ),
+            ) {
+                Text(text = favoriteLabel)
+            }
+        } else {
+            OutlinedButton(
+                onClick = onToggleFavoriteClick,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text(text = favoriteLabel)
+            }
         }
-        OutlinedButton(
+        Button(
             onClick = onDeleteClick,
             modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.error,
+                contentColor = MaterialTheme.colorScheme.onError,
+            ),
         ) {
             Text(text = stringResource(R.string.detail_action_delete))
         }
