@@ -18,4 +18,18 @@
 
     <string name="collection_list_empty_title">まだ保存したグルメがありません</string>
     <string name="collection_list_empty_message">気分にあわせて提案を保存すると、ここに表示されます。</string>
+
+    <string name="detail_title">図鑑詳細</string>
+    <string name="detail_back">戻る</string>
+    <string name="detail_description">保存したグルメの詳細とAI紹介文を確認できます。</string>
+    <string name="detail_ai_comment_title">AI紹介文</string>
+    <string name="detail_category_value">カテゴリ: %1$s</string>
+    <string name="detail_area_value">エリア: %1$s</string>
+    <string name="detail_gourmet_description_value">説明: %1$s</string>
+    <string name="detail_mood_value">提案時の気分: %1$s</string>
+    <string name="detail_suggested_date_value">提案日: %1$s</string>
+    <string name="detail_action_open_maps">Google Mapsで見る</string>
+    <string name="detail_action_add_favorite">お気に入り登録</string>
+    <string name="detail_action_remove_favorite">お気に入り解除</string>
+    <string name="detail_action_delete">図鑑から削除</string>
 </resources>
