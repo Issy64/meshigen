@@ -1,15 +1,30 @@
 package com.issy.meshigen.feature.collection
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material3.Card
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -26,6 +41,7 @@ data class CollectionListUiModel(
 )
 
 data class CollectionFilterUiModel(
+    val id: String,
     val label: String,
     val selected: Boolean,
 )
@@ -34,9 +50,9 @@ data class CollectionFilterUiModel(
 internal fun CollectionListScreen() {
     val filters = remember {
         listOf(
-            CollectionFilterUiModel(label = "すべて", selected = true),
-            CollectionFilterUiModel(label = "麺", selected = false),
-            CollectionFilterUiModel(label = "ごはん", selected = false),
+            CollectionFilterUiModel(id = "all", label = "すべて", selected = true),
+            CollectionFilterUiModel(id = "noodle", label = "麺", selected = false),
+            CollectionFilterUiModel(id = "rice", label = "ごはん", selected = false),
         )
     }
 
@@ -94,8 +110,92 @@ private fun CollectionListScreenContent(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // TODO: フィルタのUIを実装(ISSUE#12)
-            
+            FilterRow(
+                filters = filters,
+                onFilterClick = onFilterClick,
+            )
+
+            LazyColumn(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                items(items = items, key = { it.id }) { item ->
+                    CollectionListCard(
+                        item = item,
+                        onClick = { onItemClick(item) },
+                        onFavoriteClick = { onFavoriteClick(item) },
+                    )
+                }
+            }
         }
+    }
+}
+
+@Composable
+private fun FilterRow(
+    filters: List<CollectionFilterUiModel>,
+    onFilterClick: (CollectionFilterUiModel) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    LazyRow(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        items(items = filters, key = { it.id }) { filter ->
+            FilterChip(
+                selected = filter.selected,
+                onClick = { onFilterClick(filter) },
+                label = { Text(text = filter.label) },
+            )
+        }
+    }
+}
+
+@Composable
+private  fun CollectionListCard(
+    item: CollectionListUiModel,
+    onClick: () -> Unit,
+    onFavoriteClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        onClick = onClick,
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Column(modifier.weight(1f)) {
+                Text(text = item.name, style = MaterialTheme.typography.titleMedium)
+                Text(text = "${item.category}/${item.area}", style = MaterialTheme.typography.bodyMedium)
+                Text(text = item.suggestedDate, style = MaterialTheme.typography.bodyMedium)
+            }
+
+            FavoriteIcon(
+                favorite = item.favorite,
+                onClick = onFavoriteClick,
+            )
+        }
+    }
+}
+
+@Composable
+private fun FavoriteIcon( // 使い回すかもしれないので切り出し
+    favorite: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val imageVector = if(favorite) Icons.Filled.Favorite  else  Icons.Outlined.FavoriteBorder
+    val contentDescription = if(favorite) "お気に入り解除" else "お気に入り登録"
+
+    IconButton(onClick = onClick, modifier = modifier) {
+        Icon(
+            imageVector = imageVector,
+            contentDescription = contentDescription,
+        )
     }
 }
