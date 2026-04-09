@@ -10,5 +10,12 @@
 
     <string name="collection_list_title">図鑑一覧</string>
     <string name="collection_list_description">保存した北九州B級グルメを確認できます。</string>
+    <string name="collection_filter_all">すべて</string>
+    <string name="collection_filter_noodle">麺</string>
+    <string name="collection_filter_rice">ごはん</string>
+    <string name="collection_favorite_add">お気に入り登録</string>
+    <string name="collection_favorite_remove">お気に入り解除</string>
 
+    <string name="collection_list_empty_title">まだ保存したグルメがありません</string>
+    <string name="collection_list_empty_message">気分にあわせて提案を保存すると、ここに表示されます。</string>
 </resources>
