@@ -34,7 +34,7 @@ data class DetailUiModel(
     val aiComment: String,
     val moodText: String,
     val suggestedDate: String, // yyyy-MM-dd
-    val isFavorite: Boolean,
+    val favorite: Boolean,
 )
 
 @Composable
@@ -48,15 +48,15 @@ internal fun DetailScreen() {
             aiComment = "今日はしっかり食べたい気分にぴったり。鉄板で香ばしく仕上がる満足感が高い一品です。",
             moodText = "ガッツリ食べたい",
             suggestedDate = "2026-04-07",
-            isFavorite = false,
+            favorite = false,
         )
     }
-    var isFavorite by rememberSaveable { mutableStateOf(baseUiModel.isFavorite) }
+    var favorite by rememberSaveable { mutableStateOf(baseUiModel.favorite) }
 
     DetailScreenContent(
-        uiModel = baseUiModel.copy(isFavorite = isFavorite),
+        uiModel = baseUiModel.copy(favorite = favorite),
         onBackClick = { },
-        onFavoriteClick = { isFavorite = !isFavorite },
+        onFavoriteClick = { favorite = !favorite },
         onDeleteClick = { },
         onOpenMapsClick = { },
     )
@@ -118,7 +118,7 @@ internal fun DetailScreenContent(
 
             item {
                 ActionButtons(
-                    isFavorite = uiModel.isFavorite,
+                    favorite = uiModel.favorite,
                     onFavoriteClick = onFavoriteClick,
                     onDeleteClick = onDeleteClick,
                     onOpenMapsClick = onOpenMapsClick,
@@ -211,13 +211,13 @@ private fun SectionCard(
 
 @Composable
 private fun ActionButtons(
-    isFavorite: Boolean,
+    favorite: Boolean,
     onFavoriteClick: () -> Unit,
     onDeleteClick: () -> Unit,
     onOpenMapsClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val favoriteLabel = if (isFavorite) {
+    val favoriteLabel = if (favorite) {
         stringResource(R.string.detail_action_remove_favorite)
     } else {
         stringResource(R.string.detail_action_add_favorite)
