@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.FilterChip
@@ -27,9 +26,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.issy.meshigen.R
-import kotlin.collections.listOf
 
 data class CollectionListUiModel(
     val id: String,
@@ -48,13 +47,23 @@ data class CollectionFilterUiModel(
 
 @Composable
 internal fun CollectionListScreen() {
-    val filters = remember {
-        listOf(
-            CollectionFilterUiModel(id = "all", label = "すべて", selected = true),
-            CollectionFilterUiModel(id = "noodle", label = "麺", selected = false),
-            CollectionFilterUiModel(id = "rice", label = "ごはん", selected = false),
-        )
-    }
+    val filters = listOf(
+        CollectionFilterUiModel(
+            id = "all",
+            label = stringResource(R.string.collection_filter_all),
+            selected = true,
+        ),
+        CollectionFilterUiModel(
+            id = "noodle",
+            label = stringResource(R.string.collection_filter_noodle),
+            selected = false,
+        ),
+        CollectionFilterUiModel(
+            id = "rice",
+            label = stringResource(R.string.collection_filter_rice),
+            selected = false,
+        ),
+    )
 
     val items = remember {
         listOf(
@@ -79,7 +88,7 @@ internal fun CollectionListScreen() {
 }
 
 @Composable
-private fun CollectionListScreenContent(
+internal fun CollectionListScreenContent(
     filters: List<CollectionFilterUiModel>,
     items: List<CollectionListUiModel>,
     onFilterClick: (CollectionFilterUiModel) -> Unit,
@@ -115,16 +124,24 @@ private fun CollectionListScreenContent(
                 onFilterClick = onFilterClick,
             )
 
-            LazyColumn(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                items(items = items, key = { it.id }) { item ->
-                    CollectionListCard(
-                        item = item,
-                        onClick = { onItemClick(item) },
-                        onFavoriteClick = { onFavoriteClick(item) },
-                    )
+            if (items.isEmpty()) {
+                EmptyState(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                )
+            } else {
+                LazyColumn(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    items(items = items, key = { it.id }) { item ->
+                        CollectionListCard(
+                            item = item,
+                            onClick = { onItemClick(item) },
+                            onFavoriteClick = { onFavoriteClick(item) },
+                        )
+                    }
                 }
             }
         }
@@ -170,9 +187,24 @@ private  fun CollectionListCard(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Column(modifier.weight(1f)) {
-                Text(text = item.name, style = MaterialTheme.typography.titleMedium)
-                Text(text = "${item.category}/${item.area}", style = MaterialTheme.typography.bodyMedium)
-                Text(text = item.suggestedDate, style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = item.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Text(
+                    text = "${item.category}/${item.area}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Text(
+                    text = item.suggestedDate,
+                    style = MaterialTheme.typography.bodyMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
             }
 
             FavoriteIcon(
@@ -190,12 +222,31 @@ private fun FavoriteIcon( // 使い回すかもしれないので切り出し
     modifier: Modifier = Modifier,
 ) {
     val imageVector = if(favorite) Icons.Filled.Favorite  else  Icons.Outlined.FavoriteBorder
-    val contentDescription = if(favorite) "お気に入り解除" else "お気に入り登録"
+    val contentDescription = if(favorite) {
+        stringResource(R.string.collection_favorite_remove)
+    } else {
+        stringResource(R.string.collection_favorite_add)
+    }
 
     IconButton(onClick = onClick, modifier = modifier) {
         Icon(
             imageVector = imageVector,
             contentDescription = contentDescription,
+        )
+    }
+}
+
+@Composable
+private fun EmptyState(modifier: Modifier = Modifier) {
+    Column() {
+        Text(
+            text = stringResource(R.string.collection_list_empty_title),
+            style = MaterialTheme.typography.titleMedium,
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = stringResource(R.string.collection_list_empty_message),
+            style = MaterialTheme.typography.bodyMedium,
         )
     }
 }
