@@ -6,7 +6,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
@@ -23,7 +24,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.issy.meshigen.R
 
 data class DetailUiModel(
@@ -74,49 +77,56 @@ internal fun DetailScreenContent(
     Scaffold(
         modifier = modifier.fillMaxSize(),
     ) { innerPadding ->
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(16.dp),
+                .padding(horizontal = 16.dp, vertical = 12.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            item {
-                Header(
-                    onBackClick = onBackClick,
-                )
-            }
+            Header(
+                onBackClick = onBackClick,
+            )
 
-            item {
-                Text(
-                    text = stringResource(R.string.detail_description),
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-            }
+            Text(
+                text = stringResource(R.string.detail_description),
+                style = MaterialTheme.typography.bodyMedium,
+            )
 
-            item {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+
                 DetailMainCard(uiModel = uiModel)
-            }
 
-            item {
+                SectionCard(
+                    title = stringResource(R.string.detail_section_description),
+                    body = uiModel.description,
+                    maxLines = Int.MAX_VALUE,
+                    overflow = TextOverflow.Clip,
+                )
                 SectionCard(
                     title = stringResource(R.string.detail_ai_comment_title),
                     body = uiModel.aiComment,
+                    maxLines = Int.MAX_VALUE,
+                    overflow = TextOverflow.Clip,
                 )
-            }
-
-            item {
-                Text(
-                    text = stringResource(R.string.detail_mood_value, uiModel.moodText),
-                    style = MaterialTheme.typography.bodyMedium,
+                SectionCard(
+                    title = stringResource(R.string.detail_section_original_mood),
+                    body = uiModel.moodText,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis,
                 )
-                Text(
-                    text = stringResource(R.string.detail_suggested_date_value, uiModel.suggestedDate),
-                    style = MaterialTheme.typography.bodyMedium,
+                SectionCard(
+                    title = stringResource(R.string.detail_section_suggested_date),
+                    body = uiModel.suggestedDate,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
-            }
-
-            item {
                 ActionButtons(
                     favorite = uiModel.favorite,
                     onFavoriteClick = onFavoriteClick,
@@ -163,20 +173,26 @@ private fun DetailMainCard(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Text(
+                text = stringResource(R.string.detail_section_basic_info),
+                style = MaterialTheme.typography.titleMedium,
+            )
+            Text(
                 text = uiModel.name,
                 style = MaterialTheme.typography.titleLarge,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
             )
             Text(
                 text = stringResource(R.string.detail_category_value, uiModel.category),
                 style = MaterialTheme.typography.bodyMedium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
             Text(
                 text = stringResource(R.string.detail_area_value, uiModel.area),
                 style = MaterialTheme.typography.bodyMedium,
-            )
-            Text(
-                text = stringResource(R.string.detail_gourmet_description_value, uiModel.description),
-                style = MaterialTheme.typography.bodyMedium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
         }
     }
@@ -186,6 +202,8 @@ private fun DetailMainCard(
 private fun SectionCard(
     title: String,
     body: String,
+    maxLines: Int,
+    overflow: TextOverflow,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -203,7 +221,9 @@ private fun SectionCard(
             )
             Text(
                 text = body,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 24.sp),
+                maxLines = maxLines,
+                overflow = overflow,
             )
         }
     }
