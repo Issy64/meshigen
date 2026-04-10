@@ -2,6 +2,7 @@ package com.issy.meshigen.feature.home
 
 data class HomeUiState(
     val moodText: String = "",
+    val recommendationUiState: HomeRecommendationUiState = HomeRecommendationUiState.Initial,
 )
 
 data class RecommendationUiModel(
