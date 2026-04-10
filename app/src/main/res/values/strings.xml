@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Meshigen</string>
+    <string name="navigation_home">ホーム</string>
+    <string name="navigation_collection">図鑑</string>
 
     <string name="home_title">今の気分は？</string>
     <string name="home_description">今の気分を入力すると、おすすめの北九州市のB級グルメを提案します。</string>
