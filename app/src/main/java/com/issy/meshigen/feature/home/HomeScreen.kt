@@ -47,7 +47,7 @@ fun HomeScreenContent(
     onEvent: (HomeUiEvent) -> Unit,
     modifier: Modifier = Modifier,
     onKeyboardDismissRequest: () -> Unit = { },
-){
+) {
 
     val isButtonEnabled = uiState.moodText.isNotBlank()
 
@@ -90,7 +90,6 @@ fun HomeScreenContent(
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = {
-                        onEvent(HomeUiEvent.ImeDone)
                         onKeyboardDismissRequest()
                     }
                 )
