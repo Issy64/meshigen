@@ -33,6 +33,7 @@ internal fun MeshigenAppShell(
     val navController = rememberNavController()
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
+    val isDetailRoute = currentRoute?.startsWith(MeshigenDestination.DETAIL_BASE_ROUTE) == true
 
     val topLevelDestinations = listOf(
         TopLevelDestination(
@@ -50,24 +51,26 @@ internal fun MeshigenAppShell(
     Scaffold(
         modifier = modifier,
         bottomBar = {
-            NavigationBar {
-                topLevelDestinations.forEach { destination ->
-                    val isSelected = currentRoute == destination.route
+            if (!isDetailRoute) {
+                NavigationBar {
+                    topLevelDestinations.forEach { destination ->
+                        val isSelected = currentRoute == destination.route
 
-                    NavigationBarItem(
-                        selected = isSelected,
-                        onClick = {
-                            navController.navigate(destination.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
+                        NavigationBarItem(
+                            selected = isSelected,
+                            onClick = {
+                                navController.navigate(destination.route) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
-                        icon = destination.icon,
-                        label = { Text(text = stringResource(destination.labelResId)) },
-                    )
+                            },
+                            icon = destination.icon,
+                            label = { Text(text = stringResource(destination.labelResId)) },
+                        )
+                    }
                 }
             }
         },
