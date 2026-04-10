@@ -17,7 +17,7 @@ private fun HomeScreenInitialPreview() {
         HomeScreenContent(
             moodText = "",
             onMoodTextChange = {},
-            resultUiState = HomeResultUiState.Initial,
+            resultUiState = HomeRecommendationUiState.Initial,
             onRecommendClick = {},
             modifier = Modifier,
         )
@@ -31,7 +31,7 @@ private fun HomeScreenSuccessPreview() {
         HomeScreenContent(
             moodText = "甘い物",
             onMoodTextChange = {},
-            resultUiState = HomeResultUiState.Success(HomeDummyDataSource.createDummyRecommendations()),
+            resultUiState = HomeRecommendationUiState.Success(HomeDummyDataSource.createDummyRecommendations()),
             onRecommendClick = {},
             modifier = Modifier,
         )
@@ -45,7 +45,7 @@ private fun HomeScreenInitialNarrowPreview() {
         HomeScreenContent(
             moodText = "",
             onMoodTextChange = {},
-            resultUiState = HomeResultUiState.Initial,
+            resultUiState = HomeRecommendationUiState.Initial,
             onRecommendClick = {},
             modifier = Modifier,
         )
@@ -59,7 +59,7 @@ private fun HomeScreenSuccessNarrowPreview() {
         HomeScreenContent(
             moodText = "甘い物",
             onMoodTextChange = {},
-            resultUiState = HomeResultUiState.Success(HomeDummyDataSource.createDummyRecommendations()),
+            resultUiState = HomeRecommendationUiState.Success(HomeDummyDataSource.createDummyRecommendations()),
             onRecommendClick = {},
             modifier = Modifier,
         )
@@ -73,7 +73,7 @@ private fun HomeScreenInitialDarkModePreview() {
         HomeScreenContent(
             moodText = "",
             onMoodTextChange = {},
-            resultUiState = HomeResultUiState.Initial,
+            resultUiState = HomeRecommendationUiState.Initial,
             onRecommendClick = {},
             modifier = Modifier,
         )
@@ -87,7 +87,7 @@ private fun HomeScreenSuccessDarkModePreview() {
         HomeScreenContent(
             moodText = "甘い物",
             onMoodTextChange = {},
-            resultUiState = HomeResultUiState.Success(HomeDummyDataSource.createDummyRecommendations()),
+            resultUiState = HomeRecommendationUiState.Success(HomeDummyDataSource.createDummyRecommendations()),
             onRecommendClick = {},
             modifier = Modifier,
         )

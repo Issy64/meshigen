@@ -30,21 +30,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.issy.meshigen.R
 
-data class RecommendationUiModel(
-    val id: String,
-    val name: String,
-    val description: String,
-    val category: String,
-)
-sealed interface HomeResultUiState {
-    data object Initial : HomeResultUiState
-    data class Success(val items: List<RecommendationUiModel>) : HomeResultUiState
-}
-
 @Composable
 internal fun HomeScreen() {
     var moodText by rememberSaveable { mutableStateOf("") }
-    var resultUiState by remember { mutableStateOf<HomeResultUiState>(HomeResultUiState.Initial) }
+    var resultUiState by remember { mutableStateOf<HomeRecommendationUiState>(HomeRecommendationUiState.Initial) }
     val keyboardController = LocalSoftwareKeyboardController.current
 
     HomeScreenContent(
@@ -52,7 +41,7 @@ internal fun HomeScreen() {
         onMoodTextChange = { moodText = it },
         resultUiState = resultUiState,
         onRecommendClick = {
-            resultUiState = HomeResultUiState.Success(
+            resultUiState = HomeRecommendationUiState.Success(
                 items = HomeDummyDataSource.createDummyRecommendations()
             )
             keyboardController?.hide()
@@ -65,7 +54,7 @@ internal fun HomeScreen() {
 fun HomeScreenContent(
     moodText: String,
     onMoodTextChange: (String) -> Unit,
-    resultUiState: HomeResultUiState,
+    resultUiState: HomeRecommendationUiState,
     onRecommendClick: () -> Unit,
     modifier: Modifier = Modifier,
     onImeDone: () -> Unit = { },
@@ -130,14 +119,14 @@ fun HomeScreenContent(
             Spacer(modifier = Modifier.height(24.dp))
 
             when (resultUiState) {
-                HomeResultUiState.Initial -> {
+                HomeRecommendationUiState.Initial -> {
                     Text(
                         text = stringResource(R.string.home_initial_hint),
                         style = MaterialTheme.typography.bodyMedium,
                     )
                 }
 
-                is HomeResultUiState.Success -> {
+                is HomeRecommendationUiState.Success -> {
                     RecommendationList(recs = resultUiState.items)
                 }
             }
