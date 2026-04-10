@@ -20,5 +20,4 @@ sealed interface HomeRecommendationUiState {
 sealed interface HomeUiEvent {
     data class MoodTextChanged(val moodText: String) : HomeUiEvent
     data object RecommendClicked : HomeUiEvent
-    data object ImeDone : HomeUiEvent
 }

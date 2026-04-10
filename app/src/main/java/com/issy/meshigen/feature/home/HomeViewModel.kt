@@ -15,7 +15,6 @@ class HomeViewModel : ViewModel() {
         when (event) {
             is HomeUiEvent.MoodTextChanged -> updateMoodText(event.moodText)
             HomeUiEvent.RecommendClicked -> recommendIfPossible()
-            HomeUiEvent.ImeDone -> Unit
         }
     }
 
