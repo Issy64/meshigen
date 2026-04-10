@@ -19,48 +19,37 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.issy.meshigen.R
 
 @Composable
 internal fun HomeScreen() {
-    var moodText by rememberSaveable { mutableStateOf("") }
-    var resultUiState by remember { mutableStateOf<HomeRecommendationUiState>(HomeRecommendationUiState.Initial) }
+    val homeViewModel: HomeViewModel = viewModel()
+    val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
     val keyboardController = LocalSoftwareKeyboardController.current
 
     HomeScreenContent(
-        moodText = moodText,
-        onMoodTextChange = { moodText = it },
-        resultUiState = resultUiState,
-        onRecommendClick = {
-            resultUiState = HomeRecommendationUiState.Success(
-                items = HomeDummyDataSource.createDummyRecommendations()
-            )
-            keyboardController?.hide()
-        },
-        onImeDone = { keyboardController?.hide() }
+        uiState = uiState,
+        onEvent = homeViewModel::onEvent,
+        onKeyboardDismissRequest = { keyboardController?.hide() },
     )
 }
 
 @Composable
 fun HomeScreenContent(
-    moodText: String,
-    onMoodTextChange: (String) -> Unit,
-    resultUiState: HomeRecommendationUiState,
-    onRecommendClick: () -> Unit,
+    uiState: HomeUiState,
+    onEvent: (HomeUiEvent) -> Unit,
     modifier: Modifier = Modifier,
-    onImeDone: () -> Unit = { },
+    onKeyboardDismissRequest: () -> Unit = { },
 ){
 
-    val isButtonEnabled = moodText.isNotBlank()
+    val isButtonEnabled = uiState.moodText.isNotBlank()
 
     Scaffold(
         modifier = modifier.fillMaxSize()
@@ -86,8 +75,8 @@ fun HomeScreenContent(
             Spacer(modifier = Modifier.height(24.dp))
 
             OutlinedTextField(
-                value = moodText,
-                onValueChange = { onMoodTextChange(it) },
+                value = uiState.moodText,
+                onValueChange = { onEvent(HomeUiEvent.MoodTextChanged(it)) },
                 modifier = Modifier.fillMaxWidth(),
                 label = {
                     Text(stringResource(R.string.home_mood_label))
@@ -100,7 +89,10 @@ fun HomeScreenContent(
                     imeAction = ImeAction.Done
                 ),
                 keyboardActions = KeyboardActions(
-                    onDone = { onImeDone() }
+                    onDone = {
+                        onEvent(HomeUiEvent.ImeDone)
+                        onKeyboardDismissRequest()
+                    }
                 )
             )
 
@@ -108,7 +100,8 @@ fun HomeScreenContent(
 
             Button(
                 onClick = {
-                    onRecommendClick()
+                    onEvent(HomeUiEvent.RecommendClicked)
+                    onKeyboardDismissRequest()
                 },
                 enabled = isButtonEnabled,
                 modifier = Modifier.fillMaxWidth()
@@ -118,7 +111,7 @@ fun HomeScreenContent(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            when (resultUiState) {
+            when (uiState.recommendationUiState) {
                 HomeRecommendationUiState.Initial -> {
                     Text(
                         text = stringResource(R.string.home_initial_hint),
@@ -127,7 +120,7 @@ fun HomeScreenContent(
                 }
 
                 is HomeRecommendationUiState.Success -> {
-                    RecommendationList(recs = resultUiState.items)
+                    RecommendationList(recs = uiState.recommendationUiState.items)
                 }
             }
         }

@@ -15,10 +15,11 @@ import com.issy.meshigen.ui.theme.MeshigenTheme
 private fun HomeScreenInitialPreview() {
     MeshigenTheme {
         HomeScreenContent(
-            moodText = "",
-            onMoodTextChange = {},
-            resultUiState = HomeRecommendationUiState.Initial,
-            onRecommendClick = {},
+            uiState = HomeUiState(
+                moodText = "",
+                recommendationUiState = HomeRecommendationUiState.Initial,
+            ),
+            onEvent = {},
             modifier = Modifier,
         )
     }
@@ -29,10 +30,11 @@ private fun HomeScreenInitialPreview() {
 private fun HomeScreenSuccessPreview() {
     MeshigenTheme {
         HomeScreenContent(
-            moodText = "甘い物",
-            onMoodTextChange = {},
-            resultUiState = HomeRecommendationUiState.Success(HomeDummyDataSource.createDummyRecommendations()),
-            onRecommendClick = {},
+            uiState = HomeUiState(
+                moodText = "甘い物",
+                recommendationUiState = HomeRecommendationUiState.Success(HomeDummyDataSource.createDummyRecommendations()),
+            ),
+            onEvent = {},
             modifier = Modifier,
         )
     }
@@ -43,10 +45,11 @@ private fun HomeScreenSuccessPreview() {
 private fun HomeScreenInitialNarrowPreview() {
     MeshigenTheme {
         HomeScreenContent(
-            moodText = "",
-            onMoodTextChange = {},
-            resultUiState = HomeRecommendationUiState.Initial,
-            onRecommendClick = {},
+            uiState = HomeUiState(
+                moodText = "",
+                recommendationUiState = HomeRecommendationUiState.Initial,
+            ),
+            onEvent = {},
             modifier = Modifier,
         )
     }
@@ -57,10 +60,11 @@ private fun HomeScreenInitialNarrowPreview() {
 private fun HomeScreenSuccessNarrowPreview() {
     MeshigenTheme {
         HomeScreenContent(
-            moodText = "甘い物",
-            onMoodTextChange = {},
-            resultUiState = HomeRecommendationUiState.Success(HomeDummyDataSource.createDummyRecommendations()),
-            onRecommendClick = {},
+            uiState = HomeUiState(
+                moodText = "甘い物",
+                recommendationUiState = HomeRecommendationUiState.Success(HomeDummyDataSource.createDummyRecommendations()),
+            ),
+            onEvent = {},
             modifier = Modifier,
         )
     }
@@ -71,10 +75,11 @@ private fun HomeScreenSuccessNarrowPreview() {
 private fun HomeScreenInitialDarkModePreview() {
     MeshigenTheme {
         HomeScreenContent(
-            moodText = "",
-            onMoodTextChange = {},
-            resultUiState = HomeRecommendationUiState.Initial,
-            onRecommendClick = {},
+            uiState = HomeUiState(
+                moodText = "",
+                recommendationUiState = HomeRecommendationUiState.Initial,
+            ),
+            onEvent = {},
             modifier = Modifier,
         )
     }
@@ -85,10 +90,11 @@ private fun HomeScreenInitialDarkModePreview() {
 private fun HomeScreenSuccessDarkModePreview() {
     MeshigenTheme {
         HomeScreenContent(
-            moodText = "甘い物",
-            onMoodTextChange = {},
-            resultUiState = HomeRecommendationUiState.Success(HomeDummyDataSource.createDummyRecommendations()),
-            onRecommendClick = {},
+            uiState = HomeUiState(
+                moodText = "甘い物",
+                recommendationUiState = HomeRecommendationUiState.Success(HomeDummyDataSource.createDummyRecommendations()),
+            ),
+            onEvent = {},
             modifier = Modifier,
         )
     }
