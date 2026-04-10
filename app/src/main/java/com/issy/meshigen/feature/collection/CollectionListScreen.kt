@@ -46,7 +46,9 @@ data class CollectionFilterUiModel(
 )
 
 @Composable
-internal fun CollectionListScreen() {
+internal fun CollectionListScreen(
+    onItemClick: (String) -> Unit,
+) {
     val filters = listOf(
         CollectionFilterUiModel(
             id = "all",
@@ -82,7 +84,7 @@ internal fun CollectionListScreen() {
         filters = filters,
         items = items,
         onFilterClick = {},
-        onItemClick = {},
+        onItemClick = { item -> onItemClick(item.id) },
         onFavoriteClick = {},
     )
 }

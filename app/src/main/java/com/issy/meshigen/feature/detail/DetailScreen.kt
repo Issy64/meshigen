@@ -42,15 +42,18 @@ data class DetailUiModel(
 )
 
 @Composable
-internal fun DetailScreen() {
-    val baseUiModel = remember {
+internal fun DetailScreen(
+    gourmetId: String,
+    onBackClick: () -> Unit,
+) {
+    val baseUiModel = remember(gourmetId) {
         DetailUiModel(
             name = "小倉焼うどん",
             category = "麺",
             area = "小倉北区",
             description = "小倉発祥の焼うどん。香ばしいソースの香りともちもち食感が魅力です。",
             aiComment = "今日はしっかり食べたい気分にぴったり。鉄板で香ばしく仕上がる満足感が高い一品です。",
-            moodText = "ガッツリ食べたい",
+            moodText = "ガッツリ食べたい（id: $gourmetId）",
             suggestedDate = "2026-04-07",
             favorite = false,
         )
@@ -59,7 +62,7 @@ internal fun DetailScreen() {
 
     DetailScreenContent(
         uiModel = baseUiModel.copy(favorite = favorite),
-        onBackClick = { },
+        onBackClick = onBackClick,
         onToggleFavoriteClick = { favorite = !favorite },
         onDeleteClick = { },
         onOpenMapClick = { },
