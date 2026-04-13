@@ -61,4 +61,14 @@ interface CollectionDao {
     // 削除
     @Query("DELETE FROM gourmet_collection WHERE id = :collectionId")
     suspend fun deleteByCollectionId(collectionId: Int): Int
+
+    // お気に入りの更新
+    @Query(
+        """
+        UPDATE gourmet_collection
+        SET is_favorite = :favorite
+        WHERE id = :collectionId
+        """
+    )
+    suspend fun updateFavorite(collectionId: Int, favorite: Boolean): Int
 }
