@@ -3,6 +3,7 @@ package com.issy.meshigen.data.local.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
@@ -13,7 +14,8 @@ import androidx.room.PrimaryKey
             parentColumns = ["id"],
             childColumns = ["gourmet_id"],
         )
-    ]
+    ],
+    indices = [Index(value = ["gourmet_id"])]
 )
 data class GourmetCollectionEntity(
     @PrimaryKey(autoGenerate = true)
