@@ -11,6 +11,8 @@ local.properties
 /.idea/deploymentTargetSelector.xml
 /.idea/markdown.xml
 /.idea/vcs.xml
+/.idea/gradle.xml
+/.idea/misc.xml
 
 .DS_Store
 /build
