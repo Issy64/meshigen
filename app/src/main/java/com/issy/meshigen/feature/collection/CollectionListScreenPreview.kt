@@ -12,7 +12,8 @@ private val previewFilters = listOf(
 
 private val previewItems = listOf(
     CollectionListUiModel(
-        id = "kokura-yakiudon",
+        gourmetId = "kokura-yakiudon",
+        collectionId = "1",
         name = "小倉焼うどん",
         category = "麺",
         area = "小倉北区",
@@ -23,7 +24,8 @@ private val previewItems = listOf(
 
 private val previewItemsLongState = listOf(
     CollectionListUiModel(
-        id = "kokura-yakiudon",
+        gourmetId = "kokura-yakiudon",
+        collectionId = "1",
         name = "門司港発祥・特製スパイス香る超濃厚スタミナ焼うどん（大盛り・追い玉子付き）",
         category = "麺料理と鉄板グルメの合わせ技",
         area = "小倉北区魚町銀天街アーケード沿いの老舗エリア",

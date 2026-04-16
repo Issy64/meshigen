@@ -22,16 +22,23 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.issy.meshigen.R
+import com.issy.meshigen.data.local.DatabaseProvider
+import com.issy.meshigen.data.repository.CollectionRepositoryImpl
 
 data class CollectionListUiModel(
-    val id: String,
+    val collectionId: String,
+    val gourmetId: String,
     val name: String,
     val category: String,
     val area: String,
@@ -67,25 +74,23 @@ internal fun CollectionListScreen(
         ),
     )
 
-    val items = remember {
-        listOf(
-            CollectionListUiModel(
-                id = "kokura-yakiudon",
-                name = "小倉焼うどん",
-                category = "麺",
-                area = "小倉北区",
-                suggestedDate = "2026-04-07", // yyyy-MM-dd
-                favorite = false,
-            )
-        )
+    val context = LocalContext.current
+
+    val factory = remember(context) {
+        val db = DatabaseProvider.get(context)
+        val repository = CollectionRepositoryImpl(db.CollectionDao())
+        CollectionListViewModelFactory(repository)
     }
+
+    val collectionListViewModel: CollectionListViewModel = viewModel(factory = factory)
+    val uiState by collectionListViewModel.uiState.collectAsStateWithLifecycle()
 
     CollectionListScreenContent(
         filters = filters,
-        items = items,
+        items = uiState.items,
         onFilterClick = {},
-        onItemClick = { item -> onItemClick(item.id) },
-        onFavoriteClick = {},
+        onItemClick = { item -> onItemClick(item.gourmetId) },
+        onFavoriteClick = collectionListViewModel::onFavoriteClick,
     )
 }
 
@@ -137,7 +142,7 @@ internal fun CollectionListScreenContent(
                     modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    items(items = items, key = { it.id }) { item ->
+                    items(items = items, key = { it.collectionId }) { item ->
                         CollectionListCard(
                             item = item,
                             onClick = { onItemClick(item) },

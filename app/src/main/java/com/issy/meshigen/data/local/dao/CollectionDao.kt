@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.issy.meshigen.data.local.entity.GourmetCollectionEntity
 import com.issy.meshigen.data.local.query.CollectionWithGourmetRow
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CollectionDao {
@@ -33,7 +34,7 @@ interface CollectionDao {
         ORDER BY gc.created_at DESC
         """
     )
-    suspend fun getAllWithGourmet(): List<CollectionWithGourmetRow>
+    fun getAllWithGourmet(): Flow<List<CollectionWithGourmetRow>>
 
     // コレクションIDで取得
     @Query(
