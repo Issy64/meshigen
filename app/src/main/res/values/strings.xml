@@ -35,4 +35,6 @@
     <string name="detail_action_add_favorite">お気に入り登録</string>
     <string name="detail_action_remove_favorite">お気に入り解除</string>
     <string name="detail_action_delete">図鑑から削除</string>
+    <string name="detail_loading">読み込み中…</string>
+    <string name="detail_not_found">見つかりません</string>
 </resources>

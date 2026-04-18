@@ -17,8 +17,8 @@ class CollectionRepositoryImpl(
             .map { rows -> rows.map(::toUiModel) }
     }
 
-    override suspend fun updateFavorite(collectionId: Int, favorite: Boolean) {
-        collectionDao.updateFavorite(collectionId, favorite)
+    override suspend fun updateFavorite(gourmetId: Int, favorite: Boolean) {
+        collectionDao.updateFavoriteByGourmetId(gourmetId, favorite)
     }
 
     private fun toUiModel(row: CollectionWithGourmetRow): CollectionListUiModel {

@@ -17,18 +17,21 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.issy.meshigen.R
+import com.issy.meshigen.data.local.DatabaseProvider
+import com.issy.meshigen.data.repository.DetailRepositoryImpl
 
 data class DetailUiModel(
     val name: String,
@@ -46,27 +49,87 @@ internal fun DetailScreen(
     gourmetId: String,
     onBackClick: () -> Unit,
 ) {
-    val baseUiModel = remember(gourmetId) {
-        DetailUiModel(
-            name = "小倉焼うどん",
-            category = "麺",
-            area = "小倉北区",
-            description = "小倉発祥の焼うどん。香ばしいソースの香りともちもち食感が魅力です。",
-            aiComment = "今日はしっかり食べたい気分にぴったり。鉄板で香ばしく仕上がる満足感が高い一品です。",
-            moodText = "ガッツリ食べたい（id: $gourmetId）",
-            suggestedDate = "2026-04-07",
-            favorite = false,
+    val context = LocalContext.current
+
+    val factory = remember(context) {
+        val db = DatabaseProvider.get(context)
+        val repository = DetailRepositoryImpl(db.CollectionDao())
+        DetailViewModelFactory(repository)
+    }
+
+    val detailViewModel: DetailViewModel = viewModel(factory = factory)
+    val uiState by detailViewModel.uiState.collectAsStateWithLifecycle()
+
+    val shouldNavigateBack by detailViewModel.shouldNavigateBack.collectAsStateWithLifecycle()
+
+    LaunchedEffect(gourmetId) {
+        detailViewModel.load(gourmetId)
+    }
+
+    LaunchedEffect(shouldNavigateBack) {
+        if (shouldNavigateBack) onBackClick()
+    }
+
+    when (val state = uiState) {
+        DetailUiState.Loading -> LoadingContent()
+        DetailUiState.NotFound -> NotFoundContent(onBackClick)
+        is DetailUiState.Ready -> DetailScreenContent(
+            uiModel = state.item,
+            onBackClick = onBackClick,
+            onToggleFavoriteClick = detailViewModel::onToggleFavoriteClick,
+            onDeleteClick = detailViewModel::onDeleteClick,
+            onOpenMapClick = { /* Step9で接続 */ },
         )
     }
-    var favorite by rememberSaveable { mutableStateOf(baseUiModel.favorite) }
+}
+@Composable
+private fun LoadingContent(
+    modifier: Modifier = Modifier,
+) {
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(
+                text = stringResource(R.string.detail_loading),
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        }
+    }
+}
 
-    DetailScreenContent(
-        uiModel = baseUiModel.copy(favorite = favorite),
-        onBackClick = onBackClick,
-        onToggleFavoriteClick = { favorite = !favorite },
-        onDeleteClick = { },
-        onOpenMapClick = { },
-    )
+@Composable
+private fun NotFoundContent(
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(
+                text = stringResource(R.string.detail_not_found),
+                style = MaterialTheme.typography.bodyMedium,
+            )
+            TextButton(onClick = onBackClick) {
+                Text(text = stringResource(R.string.detail_back))
+            }
+        }
+    }
 }
 
 @Composable

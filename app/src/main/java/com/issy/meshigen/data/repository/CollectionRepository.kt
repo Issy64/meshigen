@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface CollectionRepository {
     fun observeCollections(): Flow<List<CollectionListUiModel>>
-    suspend fun updateFavorite(collectionId: Int, favorite: Boolean)
+    suspend fun updateFavorite(gourmetId: Int, favorite: Boolean)
 }

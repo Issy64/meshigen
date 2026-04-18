@@ -27,9 +27,9 @@ class CollectionListViewModel(
             )
 
     fun onFavoriteClick(item: CollectionListUiModel) {
-        val collectionId = item.collectionId.toIntOrNull() ?: return
+        val gourmetId = item.gourmetId.toIntOrNull() ?: return
         viewModelScope.launch {
-            repository.updateFavorite(collectionId, !item.favorite)
+            repository.updateFavorite(gourmetId, !item.favorite)
         }
     }
 }
