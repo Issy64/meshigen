@@ -60,8 +60,14 @@ internal fun DetailScreen(
     val detailViewModel: DetailViewModel = viewModel(factory = factory)
     val uiState by detailViewModel.uiState.collectAsStateWithLifecycle()
 
+    val shouldNavigateBack by detailViewModel.shouldNavigateBack.collectAsStateWithLifecycle()
+
     LaunchedEffect(gourmetId) {
         detailViewModel.load(gourmetId)
+    }
+
+    LaunchedEffect(shouldNavigateBack) {
+        if (shouldNavigateBack) onBackClick()
     }
 
     when (val state = uiState) {
@@ -70,8 +76,8 @@ internal fun DetailScreen(
         is DetailUiState.Ready -> DetailScreenContent(
             uiModel = state.item,
             onBackClick = onBackClick,
-            onToggleFavoriteClick = { /* Step9で接続 */ },
-            onDeleteClick = { /* Step9で接続 */ },
+            onToggleFavoriteClick = detailViewModel::onToggleFavoriteClick,
+            onDeleteClick = detailViewModel::onDeleteClick,
             onOpenMapClick = { /* Step9で接続 */ },
         )
     }
