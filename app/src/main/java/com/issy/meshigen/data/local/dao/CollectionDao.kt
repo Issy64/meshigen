@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CollectionDao {
 
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(item: GourmetCollectionEntity): Long
 
     // 全件取得
@@ -53,23 +53,29 @@ interface CollectionDao {
             gc.created_at
         FROM gourmet_collection gc
         INNER JOIN gourmets g ON gc.gourmet_id = g.id
-        WHERE gc.id = :collectionId
+        WHERE gc.gourmet_id = :gourmetId
         LIMIT 1
         """
     )
-    suspend fun getByCollectionId(collectionId: Int): CollectionWithGourmetRow?
+    suspend fun getByGourmetId(gourmetId: Int): CollectionWithGourmetRow?
 
     // 削除
-    @Query("DELETE FROM gourmet_collection WHERE id = :collectionId")
-    suspend fun deleteByCollectionId(collectionId: Int): Int
+    @Query(
+        """
+        DELETE
+        FROM gourmet_collection
+        WHERE gourmet_id = :gourmetId
+    """
+    )
+    suspend fun deleteByGourmetId(gourmetId: Int): Int
 
     // お気に入りの更新
     @Query(
         """
         UPDATE gourmet_collection
         SET is_favorite = :favorite
-        WHERE id = :collectionId
+        WHERE gourmet_id = :gourmetId
         """
     )
-    suspend fun updateFavorite(collectionId: Int, favorite: Boolean): Int
+    suspend fun updateFavoriteByGourmetId(gourmetId: Int, favorite: Boolean): Int
 }

@@ -15,7 +15,7 @@ import androidx.room.PrimaryKey
             childColumns = ["gourmet_id"],
         )
     ],
-    indices = [Index(value = ["gourmet_id"])]
+    indices = [Index(value = ["gourmet_id"], unique = true)]
 )
 data class GourmetCollectionEntity(
     @PrimaryKey(autoGenerate = true)
