@@ -1,7 +1,7 @@
 package com.issy.meshigen.data.repository
 
 interface HomeRepository {
-    suspend fun getRecommendation(): HomeRecommendation?
+    suspend fun getRecommendation(moodText: String): HomeRecommendation?
 }
 
 data class HomeRecommendation(
@@ -9,4 +9,5 @@ data class HomeRecommendation(
     val name: String,
     val description: String,
     val category: String,
+    val isNewDiscovery: Boolean,
 )
