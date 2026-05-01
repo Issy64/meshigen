@@ -9,6 +9,7 @@
     <string name="home_mood_placeholder">たとえば (ガッツリ食べたい / 甘いものが欲しい)</string>
     <string name="home_recommend_button">おすすめを見る</string>
     <string name="home_initial_hint">気分を入力すると、おすすめ結果がここに表示されます。</string>
+    <string name="home_temporary_ai_comment">あなたの気分にぴったりのグルメを見つけました！</string>
 
     <string name="collection_list_title">図鑑一覧</string>
     <string name="collection_list_description">保存した北九州B級グルメを確認できます。</string>
