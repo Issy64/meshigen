@@ -32,7 +32,7 @@ private fun HomeScreenSuccessPreview() {
         HomeScreenContent(
             uiState = HomeUiState(
                 moodText = "甘い物",
-                recommendationUiState = HomeRecommendationUiState.Success(HomeDummyDataSource.createDummyRecommendations()),
+                recommendationUiState = HomeRecommendationUiState.Success(HomeDummyDataSource.createDummyRecommendation()),
             ),
             onEvent = {},
             modifier = Modifier,
@@ -62,7 +62,7 @@ private fun HomeScreenSuccessNarrowPreview() {
         HomeScreenContent(
             uiState = HomeUiState(
                 moodText = "甘い物",
-                recommendationUiState = HomeRecommendationUiState.Success(HomeDummyDataSource.createDummyRecommendations()),
+                recommendationUiState = HomeRecommendationUiState.Success(HomeDummyDataSource.createDummyRecommendation()),
             ),
             onEvent = {},
             modifier = Modifier,
@@ -92,7 +92,7 @@ private fun HomeScreenSuccessDarkModePreview() {
         HomeScreenContent(
             uiState = HomeUiState(
                 moodText = "甘い物",
-                recommendationUiState = HomeRecommendationUiState.Success(HomeDummyDataSource.createDummyRecommendations()),
+                recommendationUiState = HomeRecommendationUiState.Success(HomeDummyDataSource.createDummyRecommendation()),
             ),
             onEvent = {},
             modifier = Modifier,

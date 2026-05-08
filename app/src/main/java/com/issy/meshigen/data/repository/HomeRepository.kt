@@ -7,7 +7,8 @@ interface HomeRepository {
 data class HomeRecommendation(
     val id: Int,
     val name: String,
-    val description: String,
     val category: String,
+    val area: String,
+    val comment: String,
     val isNewDiscovery: Boolean,
 )

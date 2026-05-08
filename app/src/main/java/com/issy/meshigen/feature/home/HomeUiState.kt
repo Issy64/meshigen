@@ -6,15 +6,19 @@ data class HomeUiState(
 )
 
 data class RecommendationUiModel(
-    val id: String,
+    val gourmetId: String,
     val name: String,
-    val description: String,
     val category: String,
+    val area: String,
+    val comment: String,
+    val isNewDiscovery: Boolean,
 )
 
 sealed interface HomeRecommendationUiState {
     data object Initial : HomeRecommendationUiState
-    data class Success(val items: List<RecommendationUiModel>) : HomeRecommendationUiState
+    data class Success(
+        val recommendation: RecommendationUiModel,
+    ) : HomeRecommendationUiState
 }
 
 sealed interface HomeUiEvent {
