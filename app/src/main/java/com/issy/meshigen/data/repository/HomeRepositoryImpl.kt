@@ -39,8 +39,9 @@ class HomeRepositoryImpl(
         return HomeRecommendation(
             id = gourmet.id,
             name = gourmet.name,
-            description = gourmet.description,
             category = gourmet.category,
+            area = gourmet.area,
+            comment = temporaryAiComment,
             isNewDiscovery = isNewDiscovery,
         )
     }

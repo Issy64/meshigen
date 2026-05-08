@@ -44,6 +44,24 @@ class HomeRepositoryImplTest {
     }
 
     @Test
+    fun getRecommendation_returnsSelectedGourmetWithTemporaryComment() = runBlocking {
+        val repository = HomeRepositoryImpl(
+            gourmetDao = FakeGourmetDao(listOf(testGourmet)),
+            collectionDao = FakeCollectionDao(insertResult = 1L),
+            temporaryAiComment = temporaryAiComment,
+        )
+
+        val result = repository.getRecommendation(moodText = moodText)
+
+        assertNotNull(result)
+        assertEquals(testGourmet.id, result?.id)
+        assertEquals(testGourmet.name, result?.name)
+        assertEquals(testGourmet.category, result?.category)
+        assertEquals(testGourmet.area, result?.area)
+        assertEquals(temporaryAiComment, result?.comment)
+    }
+
+    @Test
     fun getRecommendation_whenGourmetsAreEmpty_returnsNull() = runBlocking {
         val collectionDao = FakeCollectionDao(insertResult = 1L)
         val repository = HomeRepositoryImpl(
