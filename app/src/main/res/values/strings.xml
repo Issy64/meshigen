@@ -10,6 +10,11 @@
     <string name="home_recommend_button">おすすめを見る</string>
     <string name="home_initial_hint">気分を入力すると、おすすめ結果がここに表示されます。</string>
     <string name="home_temporary_ai_comment">あなたの気分にぴったりのグルメを見つけました！</string>
+    <string name="home_recommendation_new_discovery">新しいグルメを発見しました！</string>
+    <string name="home_recommendation_already_discovered">図鑑登録済み</string>
+    <string name="home_recommendation_category_area">%1$s / %2$s</string>
+    <string name="home_action_search_maps">Google Mapsで探す</string>
+    <string name="home_action_view_collection">図鑑で見る</string>
 
     <string name="collection_list_title">図鑑一覧</string>
     <string name="collection_list_description">保存した北九州B級グルメを確認できます。</string>
