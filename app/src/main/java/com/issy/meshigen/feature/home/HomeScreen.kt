@@ -152,6 +152,20 @@ private fun RecommendationCard(
         Column (
             modifier = Modifier.padding(16.dp),
         ) {
+            val discoveryText = if (item.isNewDiscovery) {
+                stringResource(R.string.home_recommendation_new_discovery)
+            } else {
+                stringResource(R.string.home_recommendation_already_discovered)
+            }
+
+            Text(
+                text = discoveryText,
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.primary,
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
             Text(
                 text = item.name,
                 style = MaterialTheme.typography.titleMedium,
@@ -167,10 +181,32 @@ private fun RecommendationCard(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "${item.category} / ${item.area}",
+                text = stringResource(
+                    R.string.home_recommendation_category_area,
+                    item.category,
+                    item.area,
+                ),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.primary,
             )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = {},
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text(stringResource(R.string.home_action_search_maps))
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Button(
+                onClick = {},
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text(stringResource(R.string.home_action_view_collection))
+            }
         }
     }
 }
