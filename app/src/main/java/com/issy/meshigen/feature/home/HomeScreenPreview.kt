@@ -20,6 +20,7 @@ private fun HomeScreenInitialPreview() {
                 recommendationUiState = HomeRecommendationUiState.Initial,
             ),
             onEvent = {},
+            onOpenDetailClick = {},
             modifier = Modifier,
         )
     }
@@ -35,6 +36,7 @@ private fun HomeScreenSuccessPreview() {
                 recommendationUiState = HomeRecommendationUiState.Success(HomeDummyDataSource.createDummyRecommendation()),
             ),
             onEvent = {},
+            onOpenDetailClick = {},
             modifier = Modifier,
         )
     }
@@ -50,6 +52,7 @@ private fun HomeScreenInitialNarrowPreview() {
                 recommendationUiState = HomeRecommendationUiState.Initial,
             ),
             onEvent = {},
+            onOpenDetailClick = {},
             modifier = Modifier,
         )
     }
@@ -65,6 +68,7 @@ private fun HomeScreenSuccessNarrowPreview() {
                 recommendationUiState = HomeRecommendationUiState.Success(HomeDummyDataSource.createDummyRecommendation()),
             ),
             onEvent = {},
+            onOpenDetailClick = {},
             modifier = Modifier,
         )
     }
@@ -80,6 +84,7 @@ private fun HomeScreenInitialDarkModePreview() {
                 recommendationUiState = HomeRecommendationUiState.Initial,
             ),
             onEvent = {},
+            onOpenDetailClick = {},
             modifier = Modifier,
         )
     }
@@ -95,6 +100,7 @@ private fun HomeScreenSuccessDarkModePreview() {
                 recommendationUiState = HomeRecommendationUiState.Success(HomeDummyDataSource.createDummyRecommendation()),
             ),
             onEvent = {},
+            onOpenDetailClick = {},
             modifier = Modifier,
         )
     }

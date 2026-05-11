@@ -22,7 +22,13 @@ internal fun MeshigenNavHost(
         modifier = modifier,
     ) {
         composable(route = MeshigenDestination.HOME_ROUTE) {
-            HomeScreen()
+            HomeScreen(
+                onOpenDetailClick = { gourmetId ->
+                    navController.navigate(
+                        MeshigenDestination.createDetailRoute(gourmetId)
+                    )
+                },
+            )
         }
         composable(route = MeshigenDestination.COLLECTION_ROUTE) {
             CollectionListScreen(
