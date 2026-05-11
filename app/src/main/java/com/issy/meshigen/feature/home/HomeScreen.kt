@@ -30,7 +30,9 @@ import com.issy.meshigen.data.local.DatabaseProvider
 import com.issy.meshigen.data.repository.HomeRepositoryImpl
 
 @Composable
-internal fun HomeScreen() {
+internal fun HomeScreen(
+    onOpenDetailClick: (String) -> Unit,
+) {
     val context = LocalContext.current
 
     val factory = remember(context) {
@@ -50,6 +52,7 @@ internal fun HomeScreen() {
     HomeScreenContent(
         uiState = uiState,
         onEvent = homeViewModel::onEvent,
+        onOpenDetailClick = onOpenDetailClick,
         onKeyboardDismissRequest = { keyboardController?.hide() },
     )
 }
@@ -58,6 +61,7 @@ internal fun HomeScreen() {
 fun HomeScreenContent(
     uiState: HomeUiState,
     onEvent: (HomeUiEvent) -> Unit,
+    onOpenDetailClick: (String) -> Unit,
     modifier: Modifier = Modifier,
     onKeyboardDismissRequest: () -> Unit = { },
 ) {
@@ -134,6 +138,7 @@ fun HomeScreenContent(
                 is HomeRecommendationUiState.Success -> {
                     RecommendationCard(
                         item = uiState.recommendationUiState.recommendation,
+                        onOpenDetailClick = onOpenDetailClick,
                     )
                 }
             }
@@ -144,6 +149,7 @@ fun HomeScreenContent(
 @Composable
 private fun RecommendationCard(
     item: RecommendationUiModel,
+    onOpenDetailClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -202,7 +208,7 @@ private fun RecommendationCard(
             Spacer(modifier = Modifier.height(8.dp))
 
             Button(
-                onClick = {},
+                onClick = { onOpenDetailClick(item.gourmetId) },
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Text(stringResource(R.string.home_action_view_collection))
