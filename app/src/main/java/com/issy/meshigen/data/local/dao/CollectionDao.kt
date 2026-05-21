@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.issy.meshigen.data.local.entity.GourmetCollectionEntity
 import com.issy.meshigen.data.local.query.CollectionWithGourmetRow
+import com.issy.meshigen.data.local.query.GourmetWithDiscoveryRow
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -35,6 +36,32 @@ interface CollectionDao {
         """
     )
     fun getAllWithGourmet(): Flow<List<CollectionWithGourmetRow>>
+
+    // gourmets基準で全件取得(未発見を含む)
+    @Query(
+        """
+            SELECT
+                g.id AS gourmet_id,
+                g.name,
+                g.area,
+                g.category,
+                g.description,
+                g.search_keyword,
+                (gc.id IS NOT NULL) AS discovered,
+                gc.id AS collection_id,
+                gc.mood_text,
+                gc.ai_comment,
+                COALESCE(gc.is_favorite, 0) AS is_favorite,
+                gc.created_at
+            FROM gourmets AS g
+            LEFT JOIN gourmet_collection AS gc ON gc.gourmet_id = g.id
+            ORDER BY
+                (gc.id IS NULL) ASC,
+                gc.created_at DESC,
+                g.id ASC
+        """
+    )
+    fun observeAllGourmetsWithDiscovery(): Flow<List<GourmetWithDiscoveryRow>>
 
     // コレクションIDで取得
     @Query(
