@@ -21,6 +21,10 @@
     <string name="collection_filter_all">すべて</string>
     <string name="collection_filter_noodle">麺</string>
     <string name="collection_filter_rice">ごはん</string>
+    <string name="collection_filter_undiscovered">未発見</string>
+    <string name="collection_filter_discovered">発見済み</string>
+    <string name="collection_filter_favorite">お気に入り</string>
+    <string name="collection_list_discovery_count">%1$d / 30</string>
     <string name="collection_favorite_add">お気に入り登録</string>
     <string name="collection_favorite_remove">お気に入り解除</string>
 

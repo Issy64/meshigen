@@ -6,8 +6,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.issy.meshigen.ui.theme.MeshigenTheme
 
 private val previewFilters = listOf(
-    CollectionFilterUiModel(id = "all", label = "すべて", selected = true),
-    CollectionFilterUiModel(id = "noodle", label = "麺", selected = false),
+    CollectionFilterUiModel(
+        id = "all",
+        label = "すべて",
+        selected = true,
+    ),
+    CollectionFilterUiModel(
+        id = "undiscovered",
+        label = "未発見",
+        selected = false,
+    ),
+    CollectionFilterUiModel(
+        id = "discovered",
+        label = "発見済み",
+        selected = false,
+    ),
+    CollectionFilterUiModel(
+        id = "favorite",
+        label = "お気に入り",
+        selected = false,
+    ),
 )
 
 private val previewItems = listOf(
@@ -18,7 +36,8 @@ private val previewItems = listOf(
         category = "麺",
         area = "小倉北区",
         suggestedDate = "2026-04-09", // yyyy-MM-dd
-        favorite = false,
+        discovered = false,
+        favorite = true,
     )
 )
 
@@ -30,7 +49,8 @@ private val previewItemsLongState = listOf(
         category = "麺料理と鉄板グルメの合わせ技",
         area = "小倉北区魚町銀天街アーケード沿いの老舗エリア",
         suggestedDate = "2026-04-09", // yyyy-MM-dd
-        favorite = false,
+        discovered = true,
+        favorite = true,
     )
 )
 
@@ -41,6 +61,7 @@ private fun CollectionListScreenPreview() {
         CollectionListScreenContent(
             filters = previewFilters,
             items = previewItemsLongState,
+            discoveredCount = 1,
             onFilterClick = {},
             onItemClick = {},
             onFavoriteClick = {},
@@ -55,6 +76,7 @@ private fun CollectionEmptyListScreenPreview() {
         CollectionListScreenContent(
             filters = previewFilters,
             items = emptyList(),
+            discoveredCount = 1,
             onFilterClick = {},
             onItemClick = {},
             onFavoriteClick = {},
@@ -69,6 +91,7 @@ private fun CollectionNarrowListScreenPreview() {
         CollectionListScreenContent(
             filters = previewFilters,
             items = previewItems,
+            discoveredCount = 1,
             onFilterClick = {},
             onItemClick = {},
             onFavoriteClick = {},
@@ -83,6 +106,7 @@ private fun CollectionDarkListScreenPreview() {
         CollectionListScreenContent(
             filters = previewFilters,
             items = previewItems,
+            discoveredCount = 1,
             onFilterClick = {},
             onItemClick = {},
             onFavoriteClick = {},
