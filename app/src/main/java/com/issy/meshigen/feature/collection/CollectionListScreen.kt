@@ -43,6 +43,7 @@ data class CollectionListUiModel(
     val category: String,
     val area: String,
     val suggestedDate: String, // yyyy-MM-dd
+    val discovered: Boolean,
     val favorite: Boolean,
 )
 
@@ -56,39 +57,45 @@ data class CollectionFilterUiModel(
 internal fun CollectionListScreen(
     onItemClick: (String) -> Unit,
 ) {
-    val filters = listOf(
-        CollectionFilterUiModel(
-            id = "all",
-            label = stringResource(R.string.collection_filter_all),
-            selected = true,
-        ),
-        CollectionFilterUiModel(
-            id = "noodle",
-            label = stringResource(R.string.collection_filter_noodle),
-            selected = false,
-        ),
-        CollectionFilterUiModel(
-            id = "rice",
-            label = stringResource(R.string.collection_filter_rice),
-            selected = false,
-        ),
-    )
 
     val context = LocalContext.current
-
     val factory = remember(context) {
         val db = DatabaseProvider.get(context)
         val repository = CollectionRepositoryImpl(db.CollectionDao())
         CollectionListViewModelFactory(repository)
     }
-
     val collectionListViewModel: CollectionListViewModel = viewModel(factory = factory)
+
     val uiState by collectionListViewModel.uiState.collectAsStateWithLifecycle()
+
+    val filters = listOf(
+        CollectionFilterUiModel(
+            id = "all",
+            label = stringResource(R.string.collection_filter_all),
+            selected = uiState.selectedFilter == "all",
+        ),
+        CollectionFilterUiModel(
+            id = "undiscovered",
+            label = stringResource(R.string.collection_filter_undiscovered),
+            selected = uiState.selectedFilter == "undiscovered",
+        ),
+        CollectionFilterUiModel(
+            id = "discovered",
+            label = stringResource(R.string.collection_filter_discovered),
+            selected = uiState.selectedFilter == "discovered",
+        ),
+        CollectionFilterUiModel(
+            id = "favorite",
+            label = stringResource(R.string.collection_filter_favorite),
+            selected = uiState.selectedFilter == "favorite",
+        ),
+    )
 
     CollectionListScreenContent(
         filters = filters,
         items = uiState.items,
-        onFilterClick = {},
+        discoveredCount = uiState.discoveredCount,
+        onFilterClick = { collectionListViewModel.onFilterClick(it.id) },
         onItemClick = { item -> onItemClick(item.gourmetId) },
         onFavoriteClick = collectionListViewModel::onFavoriteClick,
     )
@@ -98,6 +105,7 @@ internal fun CollectionListScreen(
 internal fun CollectionListScreenContent(
     filters: List<CollectionFilterUiModel>,
     items: List<CollectionListUiModel>,
+    discoveredCount: Int,
     onFilterClick: (CollectionFilterUiModel) -> Unit,
     onItemClick: (CollectionListUiModel) -> Unit,
     onFavoriteClick: (CollectionListUiModel) -> Unit,
@@ -126,6 +134,13 @@ internal fun CollectionListScreenContent(
 
             Spacer(modifier = Modifier.height(8.dp))
 
+            Text(
+                text = stringResource(R.string.collection_list_discovery_count, discoveredCount),
+                style = MaterialTheme.typography.bodyMedium,
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
             FilterRow(
                 filters = filters,
                 onFilterClick = onFilterClick,
@@ -142,7 +157,7 @@ internal fun CollectionListScreenContent(
                     modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    items(items = items, key = { it.collectionId }) { item ->
+                    items(items = items, key = { it.gourmetId }) { item ->
                         CollectionListCard(
                             item = item,
                             onClick = { onItemClick(item) },
@@ -195,29 +210,33 @@ private  fun CollectionListCard(
         ) {
             Column(modifier.weight(1f)) {
                 Text(
-                    text = item.name,
+                    text = if (item.discovered) item.name else "???",
                     style = MaterialTheme.typography.titleMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
                 Text(
-                    text = "${item.category}/${item.area}",
+                    text = if (item.discovered) "${item.category}/${item.area}" else "???",
                     style = MaterialTheme.typography.bodyMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
-                Text(
-                    text = item.suggestedDate,
-                    style = MaterialTheme.typography.bodyMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
+                if (item.discovered) {
+                    Text(
+                        text = item.suggestedDate,
+                        style = MaterialTheme.typography.bodyMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
             }
 
-            FavoriteIcon(
-                favorite = item.favorite,
-                onClick = onFavoriteClick,
-            )
+            if (item.discovered) {
+                FavoriteIcon(
+                    favorite = item.favorite,
+                    onClick = onFavoriteClick,
+                )
+            }
         }
     }
 }
