@@ -6,4 +6,5 @@ interface DetailRepository {
     suspend fun getByGourmetId(gourmetId: Int): CollectionWithGourmetRow?
     suspend fun updateFavoriteByGourmetId(gourmetId: Int, favorite: Boolean): Boolean
     suspend fun deleteByGourmetId(gourmetId: Int): Boolean
+    suspend fun existsGourmet(gourmetId: Int): Boolean
 }
