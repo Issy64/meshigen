@@ -105,4 +105,14 @@ interface CollectionDao {
         """
     )
     suspend fun updateFavoriteByGourmetId(gourmetId: Int, favorite: Boolean): Int
+
+    // 件数が1件以上あるかを確認
+    @Query(
+        """
+            SELECT COUNT(*) > 0
+            FROM gourmets
+            WHERE id = :gourmetId
+        """
+    )
+    suspend fun existsGourmet(gourmetId: Int): Boolean
 }

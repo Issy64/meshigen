@@ -73,6 +73,7 @@ internal fun DetailScreen(
     when (val state = uiState) {
         DetailUiState.Loading -> LoadingContent()
         DetailUiState.NotFound -> NotFoundContent(onBackClick)
+        DetailUiState.Locked -> LockedContent(onBackClick)
         is DetailUiState.Ready -> DetailScreenContent(
             uiModel = state.item,
             onBackClick = onBackClick,
@@ -101,6 +102,33 @@ private fun LoadingContent(
                 text = stringResource(R.string.detail_loading),
                 style = MaterialTheme.typography.bodyMedium,
             )
+        }
+    }
+}
+
+@Composable
+private fun LockedContent(
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(
+                text = stringResource(R.string.detail_locked),
+                style = MaterialTheme.typography.headlineLarge,
+            )
+            TextButton(onClick = onBackClick) {
+                Text(text = stringResource(R.string.detail_back))
+            }
         }
     }
 }

@@ -14,4 +14,7 @@ class DetailRepositoryImpl(
 
     override suspend fun deleteByGourmetId(gourmetId: Int): Boolean =
         collectionDao.deleteByGourmetId(gourmetId) > 0
+
+    override suspend fun existsGourmet(gourmetId: Int): Boolean =
+        collectionDao.existsGourmet(gourmetId)
 }

@@ -12,6 +12,7 @@ sealed interface DetailUiState {
     data object Loading : DetailUiState
     data class Ready(val item: DetailUiModel) : DetailUiState
     data object NotFound : DetailUiState
+    data object Locked : DetailUiState
 }
 
 class DetailViewModel(
@@ -39,9 +40,14 @@ class DetailViewModel(
 
             val row = repository.getByGourmetId(id)
             if (row == null) {
-                _uiState.value = DetailUiState.NotFound
-                currentGourmetId = null
-                return@launch
+                if (repository.existsGourmet(id)) {
+                    _uiState.value = DetailUiState.Locked
+                    return@launch
+                } else {
+                    _uiState.value = DetailUiState.NotFound
+                    currentGourmetId = null
+                    return@launch
+                }
             }
 
             _uiState.value = DetailUiState.Ready(
