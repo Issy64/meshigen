@@ -38,7 +38,7 @@ private val previewItems = listOf(
         suggestedDate = "2026-04-09", // yyyy-MM-dd
         discovered = false,
         favorite = true,
-    )
+    ),
 )
 
 private val previewItemsLongState = listOf(
@@ -52,6 +52,75 @@ private val previewItemsLongState = listOf(
         discovered = true,
         favorite = true,
     )
+)
+
+// すべて未発見
+private val previewItemsAllUndiscovered = listOf(
+    CollectionListUiModel(
+        gourmetId = "kokura-yakiudon",
+        collectionId = "1",
+        name = "小倉焼うどん",
+        category = "麺",
+        area = "小倉北区",
+        suggestedDate = "2026-04-09", // yyyy-MM-dd
+        discovered = false,
+        favorite = true,
+    ),
+    CollectionListUiModel(
+        gourmetId = "mojiko-yakiudon",
+        collectionId = "2",
+        name = "門司港焼うどん",
+        category = "麺",
+        area = "門司区レトロ地区の海沿いエリア",
+        suggestedDate = "2026-04-10", // yyyy-MM-dd
+        discovered = false,
+        favorite = false,
+    ),
+    CollectionListUiModel(
+        gourmetId = "wakamatu-gyoza",
+        collectionId = "3",
+        name = "若松ぎょうざ",
+        category = "中華",
+        area = "若松区",
+        suggestedDate = "2026-04-11", // yyyy-MM-dd
+        discovered = false,
+        favorite = false,
+
+    ),
+)
+
+// すべて発見済み
+private val previewItemsAllDiscovered = listOf(
+    CollectionListUiModel(
+        gourmetId = "kokura-yakiudon",
+        collectionId = "1",
+        name = "小倉焼うどん",
+        category = "麺",
+        area = "小倉北区",
+        suggestedDate = "2026-04-09", // yyyy-MM-dd
+        discovered = true,
+        favorite = true,
+    ),
+    CollectionListUiModel(
+        gourmetId = "mojiko-yakiudon",
+        collectionId = "2",
+        name = "門司港焼うどん",
+        category = "麺",
+        area = "門司区レトロ地区の海沿いエリア",
+        suggestedDate = "2026-04-10", // yyyy-MM-dd
+        discovered = true,
+        favorite = false,
+    ),
+    CollectionListUiModel(
+        gourmetId = "wakamatu-gyoza",
+        collectionId = "3",
+        name = "若松ぎょうざ",
+        category = "中華",
+        area = "若松区",
+        suggestedDate = "2026-04-11", // yyyy-MM-dd
+        discovered = true,
+        favorite = false,
+    ),
 )
 
 @Preview(name = "Collection Normal", showBackground = true)
@@ -107,6 +176,36 @@ private fun CollectionDarkListScreenPreview() {
             filters = previewFilters,
             items = previewItems,
             discoveredCount = 1,
+            onFilterClick = {},
+            onItemClick = {},
+            onFavoriteClick = {},
+        )
+    }
+}
+
+@Preview(name = "Collection All Undiscovered", showBackground = true)
+@Composable
+private fun CollectionAllUndiscoveredPreview() {
+    MeshigenTheme {
+        CollectionListScreenContent(
+            filters = previewFilters,
+            items = previewItemsAllUndiscovered,
+            discoveredCount = 0,
+            onFilterClick = {},
+            onItemClick = {},
+            onFavoriteClick = {},
+        )
+    }
+}
+
+@Preview(name = "Collection All Discovered", showBackground = true)
+@Composable
+private fun CollectionAllDiscoveredPreview() {
+    MeshigenTheme {
+        CollectionListScreenContent(
+            filters = previewFilters,
+            items = previewItemsAllDiscovered,
+            discoveredCount = 3,
             onFilterClick = {},
             onItemClick = {},
             onFavoriteClick = {},
