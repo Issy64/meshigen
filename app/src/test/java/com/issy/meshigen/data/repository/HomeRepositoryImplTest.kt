@@ -5,8 +5,10 @@ import com.issy.meshigen.data.local.dao.GourmetDao
 import com.issy.meshigen.data.local.entity.GourmetCollectionEntity
 import com.issy.meshigen.data.local.entity.GourmetEntity
 import com.issy.meshigen.data.local.query.CollectionWithGourmetRow
+import com.issy.meshigen.data.local.query.GourmetWithDiscoveryRow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -123,11 +125,15 @@ class HomeRepositoryImplTest {
 
         override fun getAllWithGourmet(): Flow<List<CollectionWithGourmetRow>> = emptyFlow()
 
+        override fun observeAllGourmetsWithDiscovery(): Flow<List<GourmetWithDiscoveryRow>> = emptyFlow()
+
         override suspend fun getByGourmetId(gourmetId: Int): CollectionWithGourmetRow? = null
 
         override suspend fun deleteByGourmetId(gourmetId: Int): Int = 0
 
         override suspend fun updateFavoriteByGourmetId(gourmetId: Int, favorite: Boolean): Int = 0
+
+        override suspend fun existsGourmet(gourmetId: Int): Boolean = false
     }
 
     private companion object {
