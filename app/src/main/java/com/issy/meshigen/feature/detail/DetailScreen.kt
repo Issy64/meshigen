@@ -84,7 +84,7 @@ internal fun DetailScreen(
     }
 }
 @Composable
-private fun LoadingContent(
+internal fun LoadingContent(
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -107,7 +107,7 @@ private fun LoadingContent(
 }
 
 @Composable
-private fun LockedContent(
+internal fun LockedContent(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -134,7 +134,7 @@ private fun LockedContent(
 }
 
 @Composable
-private fun NotFoundContent(
+internal fun NotFoundContent(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {

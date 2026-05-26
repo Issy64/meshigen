@@ -82,3 +82,41 @@ private fun DetailScreenDarkPreview() {
         )
     }
 }
+
+@Preview(name = "Detail Locked", showBackground = true)
+@Composable
+private fun DetailScreenLockedPreview() {
+    MeshigenTheme {
+        LockedContent(
+            onBackClick = {},
+        )
+    }
+}
+
+@Preview(name = "Detail Locked Dark", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Composable
+private fun DetailScreenLockedDarkPreview() {
+    MeshigenTheme {
+        LockedContent(
+            onBackClick = {},
+        )
+    }
+}
+
+@Preview(name = "Detail NotFound", showBackground = true)
+@Composable
+private fun DetailScreenNotFoundPreview() {
+    MeshigenTheme {
+        NotFoundContent(
+            onBackClick = {},
+        )
+    }
+}
+
+@Preview(name = "Detail Loading", showBackground = true)
+@Composable
+private fun DetailScreenLoadingPreview() {
+    MeshigenTheme {
+        LoadingContent()
+    }
+}
