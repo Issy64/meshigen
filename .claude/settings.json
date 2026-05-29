@@ -1,0 +1,18 @@
+{
+  "_comment": "This project is a public portfolio repository. Only read-only inspection commands are allow-listed here so that anyone cloning the repo gets a smooth Claude Code experience without inheriting mutating permissions. Personal workflow shortcuts live in .claude/settings.local.json (gitignored).",
+  "permissions": {
+    "allow": [
+      "Bash(gh issue view:*)",
+      "Bash(gh issue list:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr list:*)",
+      "Bash(git status:*)",
+      "Bash(git status)",
+      "Bash(git branch --show-current)",
+      "Bash(git branch:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git show:*)"
+    ]
+  }
+}
